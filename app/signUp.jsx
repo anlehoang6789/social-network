@@ -25,6 +25,7 @@ const SignUp = () => {
       );
       return;
     }
+
     let name = nameRef.current.trim();
     let email = emailRef.current.trim();
     let password = passwordRef.current.trim();
@@ -34,14 +35,21 @@ const SignUp = () => {
     const {
       data: { session },
       error,
-    } = await supabase.auth.signUp({ email, password });
-
+    } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name,
+        },
+      },
+    });
     setLoading(false);
 
-    console.log("session:", session);
-    console.log("err:", error);
+    // console.log("session: ", session);
+    // console.log("error: ", error);
     if (error) {
-      Alert.alert("Đăng ký", error.message);
+      Alert.alert("Sign Up", error.message);
     }
   };
   return (
