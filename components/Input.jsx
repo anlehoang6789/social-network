@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
 import { theme } from "../constants/theme";
 import { hp } from "../helpers/common";
+
 
 const Input = (props) => {
   return (

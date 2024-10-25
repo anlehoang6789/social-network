@@ -1,5 +1,5 @@
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import ScreenWrapper from "../components/ScreenWrapper";
 import { StatusBar } from "expo-status-bar";
 import BackButton from "../components/BackButton";
@@ -9,6 +9,7 @@ import { hp, wp } from "../helpers/common";
 import Input from "../components/Input";
 import Icon from "../assets/icons";
 import Button from "../components/Button";
+import { supabase } from "../lib/supabase";
 
 const Login = () => {
   const router = useRouter();
@@ -22,6 +23,21 @@ const Login = () => {
         "Vui lòng nhập tất cả các thông tin cần thiết để đăng nhập"
       );
       return;
+    }
+
+    let email = emailRef.current.trim();
+    let password = passwordRef.current.trim();
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    console.log("error: ", error);
+    if (error) {
+      Alert.alert("Đăng nhập", error.message);
     }
   };
   return (
