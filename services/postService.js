@@ -35,10 +35,13 @@ export const fetchPosts = async (limit = 10) => {
   try {
     const { data, error } = await supabase
       .from("posts")
-      .select(`
+      .select(
+        `
         *,
-        user: users (id, name, image)
-        `)
+        user: users (id, name, image),
+        postLikes (*)
+        `
+      )
       .order("created_at", { ascending: false })
       .limit(limit);
 
@@ -51,5 +54,45 @@ export const fetchPosts = async (limit = 10) => {
   } catch (error) {
     consloe.log("fetchPosts error: ", error);
     return { success: false, msg: "Không thể tải bài viết" };
+  }
+};
+
+export const createPostLike = async (postLike) => {
+  try {
+    const { data, error } = await supabase
+      .from("postLikes")
+      .insert(postLike)
+      .select()
+      .single();
+
+    if (error) {
+      consloe.log("postLike error: ", error);
+      return { success: false, msg: "Không thể thích bài viết" };
+    }
+
+    return { success: true, data: data };
+  } catch (error) {
+    consloe.log("fetchPosts error: ", error);
+    return { success: false, msg: "Không thể thích bài viết" };
+  }
+};
+
+export const removePostLike = async (postId, userId) => {
+  try {
+    const { error } = await supabase
+      .from("postLikes")
+      .delete()
+      .eq("userId", userId)
+      .eq("postId", postId);
+
+    if (error) {
+      consloe.log("postLike error: ", error);
+      return { success: false, msg: "Không thể xóa thích bài viết" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    consloe.log("fetchPosts error: ", error);
+    return { success: false, msg: "Không thể xóa thích bài viết" };
   }
 };
