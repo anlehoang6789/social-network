@@ -1,12 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { RichToolbar, actions } from "react-native-pell-rich-editor";
+import {
+  RichEditor,
+  RichToolbar,
+  actions,
+} from "react-native-pell-rich-editor";
 import { theme } from "../constants/theme";
 
 const RichTextEditor = ({ editorRef, onChange }) => {
   return (
     <View style={{ minHeight: 285 }}>
+      {/* Thanh công cụ RichToolbar */}
       <RichToolbar
+        editor={editorRef}
         actions={[
           actions.setStrikethrough,
           actions.removeFormat,
@@ -33,15 +39,15 @@ const RichTextEditor = ({ editorRef, onChange }) => {
         style={styles.richBar}
         flatContainerStyle={styles.flatStyle}
         selectedIconTint={theme.colors.primaryDark}
-        editor={editorRef}
         disabled={false}
       />
 
-      <RichTextEditor
+      {/* Trình soạn thảo RichEditor */}
+      <RichEditor
         ref={editorRef}
         containerStyle={styles.rich}
         editorStyle={styles.contentStyle}
-        placeholder={"What's on your mind?"}
+        placeholder={"Bạn đang nghĩ gì?"}
         onChange={onChange}
       />
     </View>
@@ -66,7 +72,6 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray,
     padding: 5,
   },
-
   contentStyle: {
     color: theme.colors.textDark,
     placeholderColor: "gray",

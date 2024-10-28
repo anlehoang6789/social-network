@@ -187,6 +187,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 30,
     paddingHorizonatal: wp(4),
+    marginLeft: 10,
+    marginRight: 10,
     gap: 15,
   },
   title: {

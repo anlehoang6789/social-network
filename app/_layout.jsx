@@ -7,7 +7,7 @@ import { LogBox } from "react-native";
 
 LogBox.ignoreLogs([
   "Warning: TNodeChildrenRenderer",
-  "Warning: MomoizedTNodeRenderer",
+  "Warning: MemoizedTNodeRenderer",
   "Warning: TRenderEngineProvider",
 ]);
 
