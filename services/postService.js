@@ -39,7 +39,8 @@ export const fetchPosts = async (limit = 10) => {
         `
         *,
         user: users (id, name, image),
-        postLikes (*)
+        postLikes (*),
+        comments (count)
         `
       )
       .order("created_at", { ascending: false })
@@ -92,7 +93,74 @@ export const removePostLike = async (postId, userId) => {
 
     return { success: true };
   } catch (error) {
-    consloe.log("fetchPosts error: ", error);
+    consloe.log("postLike error: ", error);
     return { success: false, msg: "Không thể xóa thích bài viết" };
+  }
+};
+
+export const fetchPostDetails = async (postId) => {
+  try {
+    const { data, error } = await supabase
+      .from("posts")
+      .select(
+        `
+        *,
+        user: users (id, name, image),
+        postLikes (*),
+        comments (*, user: users(id, name, image))
+        `
+      )
+      .eq("id", postId)
+      .order("created_at", { ascending: false, foreignTable: "comments" })
+      .single();
+
+    if (error) {
+      consloe.log("fetchPostDetails error: ", error);
+      return { success: false, msg: "Không thể tải chi tiết bài viết" };
+    }
+
+    return { success: true, data: data };
+  } catch (error) {
+    consloe.log("fetchPostDetails error: ", error);
+    return { success: false, msg: "Không thể tải chi tiết bài viết" };
+  }
+};
+
+export const createComment = async (comment) => {
+  try {
+    const { data, error } = await supabase
+      .from("comments")
+      .insert(comment)
+      .select()
+      .single();
+
+    if (error) {
+      consloe.log("comment error: ", error);
+      return { success: false, msg: "Không thể bình luận bài viết" };
+    }
+
+    return { success: true, data: data };
+  } catch (error) {
+    consloe.log("comment error: ", error);
+    return { success: false, msg: "Không thể bình luận bài viết" };
+  }
+};
+
+export const removeComment = async (commentId) => {
+  try {
+    const { error } = await supabase
+      .from("comments")
+      .delete()
+      .eq("id", commentId);
+
+    if (error) {
+      consloe.log("removeComment error: ", error);
+      return { success: false, msg: "Không thể xóa bình luận bài viết" };
+    }
+
+    return { success: true, data: { commentId } };
+  } catch (error) {
+    consloe.log("removeComment error: ", error);
+    return { success: false, msg: "Không thể xóa bình luận bài viết" };
   }
 };
