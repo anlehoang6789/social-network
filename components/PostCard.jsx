@@ -1,5 +1,5 @@
 import { Alert, Share, StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { theme } from "../constants/theme";
 import { hp, stripHtmlTags, wp } from "../helpers/common";
 import Avatar from "./Avatar";
@@ -34,6 +34,9 @@ const PostCard = ({
   router,
   hasShadow = true,
   showMoreIcon = true,
+  showDelete = false,
+  onDelete = () => {},
+  onEdit = () => {},
 }) => {
   const shadowStyles = {
     shadowOffset: {
@@ -92,6 +95,21 @@ const PostCard = ({
     Share.share(content);
   };
 
+  const handlePostDelete = () => {
+    Alert.alert("Xác nhận", "Bạn có chắc chắn muốn xóa bài viết này?", [
+      {
+        text: "Hủy",
+        onPress: () => console.log("modal cancelled"),
+        style: "cancel",
+      },
+      {
+        text: "Xóa",
+        onPress: () => onDelete(item),
+        style: "destructive",
+      },
+    ]);
+  };
+
   const createdAt = moment(item?.created_at).format("MMM D");
   const liked = likes.filter((like) => like.userId == currentUser?.id)[0]
     ? true
@@ -120,6 +138,18 @@ const PostCard = ({
               color={theme.colors.text}
             />
           </TouchableOpacity>
+        )}
+
+        {showDelete && currentUser.id == item?.userId && (
+          <View style={styles.actions}>
+            <TouchableOpacity onPress={() => onEdit(item)}>
+              <Icon name="edit" size={hp(2.5)} color={theme.colors.text} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handlePostDelete}>
+              <Icon name="delete" size={hp(2.5)} color={theme.colors.rose} />
+            </TouchableOpacity>
+          </View>
         )}
       </View>
 
