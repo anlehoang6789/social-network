@@ -115,112 +115,114 @@ const PostCard = ({
     ? true
     : false;
   return (
-    <View style={[styles.container, hasShadow && shadowStyles]}>
-      <View style={styles.header}>
-        {/* user info and post time */}
-        <View style={styles.userInfo}>
-          <Avatar
-            size={hp(4.5)}
-            uri={item?.user?.image}
-            rounded={theme.radius.md}
-          />
-          <View style={{ gap: 2 }}>
-            <Text style={styles.username}>{item?.user?.name}</Text>
-            <Text style={styles.postTime}>{createdAt}</Text>
+    <TouchableOpacity onPress={openPostDetails}>
+      <View style={[styles.container, hasShadow && shadowStyles]}>
+        <View style={styles.header}>
+          {/* user info and post time */}
+          <View style={styles.userInfo}>
+            <Avatar
+              size={hp(4.5)}
+              uri={item?.user?.image}
+              rounded={theme.radius.md}
+            />
+            <View style={{ gap: 2 }}>
+              <Text style={styles.username}>{item?.user?.name}</Text>
+              <Text style={styles.postTime}>{createdAt}</Text>
+            </View>
           </View>
-        </View>
-        {showMoreIcon && (
-          <TouchableOpacity onPress={openPostDetails}>
-            <Icon
-              name="threeDotsHorizontal"
-              size={hp(3.4)}
-              strokeWidth={3}
-              color={theme.colors.text}
-            />
-          </TouchableOpacity>
-        )}
-
-        {showDelete && currentUser.id == item?.userId && (
-          <View style={styles.actions}>
-            <TouchableOpacity onPress={() => onEdit(item)}>
-              <Icon name="edit" size={hp(2.5)} color={theme.colors.text} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={handlePostDelete}>
-              <Icon name="delete" size={hp(2.5)} color={theme.colors.rose} />
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
-
-      {/* post body & media */}
-      <View style={styles.content}>
-        <View style={styles.postBody}>
-          {item?.body && (
-            <RenderHtml
-              contentWidth={wp(100)}
-              source={{ html: item?.body }}
-              tagsStyles={tagsStyles}
-            />
-          )}
-        </View>
-
-        {/* post image */}
-        {item?.file && item?.file?.includes("postImages") && (
-          <Image
-            source={getSupabaseFileUrl(item?.file)}
-            transition={100}
-            style={styles.postMedia}
-            contentFit="cover"
-          />
-        )}
-
-        {/* post video */}
-        {item?.file && item?.file?.includes("postVideos") && (
-          <Video
-            style={[styles.postMedia, { height: hp(30) }]}
-            source={getSupabaseFileUrl(item?.file)}
-            useNativeControls
-            resizeMode="cover"
-            isLooping
-          />
-        )}
-      </View>
-
-      {/* like, comment & share */}
-      <View style={styles.footer}>
-        <View style={styles.footerButton}>
-          <TouchableOpacity onPress={onLike}>
-            <Icon
-              name="heart"
-              size={24}
-              fill={liked ? theme.colors.rose : "transparent"}
-              color={liked ? theme.colors.rose : theme.colors.textLight}
-            />
-          </TouchableOpacity>
-          <Text style={styles.count}>{likes?.length}</Text>
-        </View>
-        <View style={styles.footerButton}>
-          <TouchableOpacity onPress={openPostDetails}>
-            <Icon name="comment" size={24} color={theme.colors.textLight} />
-          </TouchableOpacity>
-          <Text style={styles.count}>{item?.comments[0]?.count}</Text>
-        </View>
-        <View style={styles.footerButton}>
-          {loading ? (
-            <Loading size="small" />
-          ) : (
-            <TouchableOpacity onPress={onShare}>
+          {showMoreIcon && (
+            <TouchableOpacity onPress={openPostDetails}>
               <Icon
-                name="share"
-                size={24}
-                color={liked ? theme.colors.rose : theme.colors.textLight}
+                name="threeDotsHorizontal"
+                size={hp(3.4)}
+                strokeWidth={3}
+                color={theme.colors.text}
               />
             </TouchableOpacity>
           )}
+
+          {showDelete && currentUser.id == item?.userId && (
+            <View style={styles.actions}>
+              <TouchableOpacity onPress={() => onEdit(item)}>
+                <Icon name="edit" size={hp(2.5)} color={theme.colors.text} />
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={handlePostDelete}>
+                <Icon name="delete" size={hp(2.5)} color={theme.colors.rose} />
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
+        {/* post body & media */}
+        <View style={styles.content}>
+          <View style={styles.postBody}>
+            {item?.body && (
+              <RenderHtml
+                contentWidth={wp(100)}
+                source={{ html: item?.body }}
+                tagsStyles={tagsStyles}
+              />
+            )}
+          </View>
+
+          {/* post image */}
+          {item?.file && item?.file?.includes("postImages") && (
+            <Image
+              source={getSupabaseFileUrl(item?.file)}
+              transition={100}
+              style={styles.postMedia}
+              contentFit="cover"
+            />
+          )}
+
+          {/* post video */}
+          {item?.file && item?.file?.includes("postVideos") && (
+            <Video
+              style={[styles.postMedia, { height: hp(30) }]}
+              source={getSupabaseFileUrl(item?.file)}
+              useNativeControls
+              resizeMode="cover"
+              isLooping
+            />
+          )}
+        </View>
+
+        {/* like, comment & share */}
+        <View style={styles.footer}>
+          <View style={styles.footerButton}>
+            <TouchableOpacity onPress={onLike}>
+              <Icon
+                name="heart"
+                size={24}
+                fill={liked ? theme.colors.rose : "transparent"}
+                color={liked ? theme.colors.rose : theme.colors.textLight}
+              />
+            </TouchableOpacity>
+            <Text style={styles.count}>{likes?.length}</Text>
+          </View>
+          <View style={styles.footerButton}>
+            <TouchableOpacity onPress={openPostDetails}>
+              <Icon name="comment" size={24} color={theme.colors.textLight} />
+            </TouchableOpacity>
+            <Text style={styles.count}>{item?.comments[0]?.count}</Text>
+          </View>
+          <View style={styles.footerButton}>
+            {loading ? (
+              <Loading size="small" />
+            ) : (
+              <TouchableOpacity onPress={onShare}>
+                <Icon
+                  name="share"
+                  size={24}
+                  color={liked ? theme.colors.rose : theme.colors.textLight}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

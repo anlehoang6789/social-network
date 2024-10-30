@@ -26,7 +26,7 @@ export const createOrUpdatePost = async (post) => {
     }
     return { success: true, data: data };
   } catch (error) {
-    consloe.log("createPost error: ", error);
+    console.log("createPost error: ", error);
     return { success: false, msg: "Không thể tạo bài viết của bạn" };
   }
 };
@@ -49,7 +49,7 @@ export const fetchPosts = async (limit = 10, userId) => {
         .limit(limit);
 
       if (error) {
-        consloe.log("fetchPosts error: ", error);
+        console.log("fetchPosts error: ", error);
         return { success: false, msg: "Không thể tải bài viết" };
       }
 
@@ -69,14 +69,14 @@ export const fetchPosts = async (limit = 10, userId) => {
         .limit(limit);
 
       if (error) {
-        consloe.log("fetchPosts error: ", error);
+        console.log("fetchPosts error: ", error);
         return { success: false, msg: "Không thể tải bài viết" };
       }
 
       return { success: true, data: data };
     }
   } catch (error) {
-    consloe.log("fetchPosts error: ", error);
+    console.log("fetchPosts error: ", error);
     return { success: false, msg: "Không thể tải bài viết" };
   }
 };
@@ -90,13 +90,13 @@ export const createPostLike = async (postLike) => {
       .single();
 
     if (error) {
-      consloe.log("postLike error: ", error);
+      console.log("postLike error: ", error);
       return { success: false, msg: "Không thể thích bài viết" };
     }
 
     return { success: true, data: data };
   } catch (error) {
-    consloe.log("fetchPosts error: ", error);
+    console.log("fetchPosts error: ", error);
     return { success: false, msg: "Không thể thích bài viết" };
   }
 };
@@ -110,13 +110,13 @@ export const removePostLike = async (postId, userId) => {
       .eq("postId", postId);
 
     if (error) {
-      consloe.log("postLike error: ", error);
+      console.log("postLike error: ", error);
       return { success: false, msg: "Không thể xóa thích bài viết" };
     }
 
     return { success: true };
   } catch (error) {
-    consloe.log("postLike error: ", error);
+    console.log("postLike error: ", error);
     return { success: false, msg: "Không thể xóa thích bài viết" };
   }
 };
@@ -138,13 +138,13 @@ export const fetchPostDetails = async (postId) => {
       .single();
 
     if (error) {
-      consloe.log("fetchPostDetails error: ", error);
+      console.log("fetchPostDetails error: ", error);
       return { success: false, msg: "Không thể tải chi tiết bài viết" };
     }
 
     return { success: true, data: data };
   } catch (error) {
-    consloe.log("fetchPostDetails error: ", error);
+    console.log("fetchPostDetails error: ", error);
     return { success: false, msg: "Không thể tải chi tiết bài viết" };
   }
 };
@@ -158,13 +158,13 @@ export const createComment = async (comment) => {
       .single();
 
     if (error) {
-      consloe.log("comment error: ", error);
+      console.log("comment error: ", error);
       return { success: false, msg: "Không thể bình luận bài viết" };
     }
 
     return { success: true, data: data };
   } catch (error) {
-    consloe.log("comment error: ", error);
+    console.log("comment error: ", error);
     return { success: false, msg: "Không thể bình luận bài viết" };
   }
 };
@@ -177,13 +177,13 @@ export const removeComment = async (commentId) => {
       .eq("id", commentId);
 
     if (error) {
-      consloe.log("removeComment error: ", error);
+      console.log("removeComment error: ", error);
       return { success: false, msg: "Không thể xóa bình luận bài viết" };
     }
 
     return { success: true, data: { commentId } };
   } catch (error) {
-    consloe.log("removeComment error: ", error);
+    console.log("removeComment error: ", error);
     return { success: false, msg: "Không thể xóa bình luận bài viết" };
   }
 };
@@ -193,13 +193,13 @@ export const removePost = async (postId) => {
     const { error } = await supabase.from("posts").delete().eq("id", postId);
 
     if (error) {
-      consloe.log("removePost error: ", error);
+      console.log("removePost error: ", error);
       return { success: false, msg: "Không thể xóa bài viết" };
     }
 
     return { success: true, data: { postId } };
   } catch (error) {
-    consloe.log("removePost error: ", error);
+    console.log("removePost error: ", error);
     return { success: false, msg: "Không thể xóa bài viết" };
   }
 };
